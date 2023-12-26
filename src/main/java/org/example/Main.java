@@ -120,8 +120,7 @@ public class Main {
             ans.add(dfs(v, new HashSet<>()));
         }
 
-        System.out.println("Meg used=" + (Runtime.getRuntime().totalMemory() -
-                Runtime.getRuntime().freeMemory()) / (1000 * 1000) + "M");
+
 
         System.out.println(ans.size());
         ans.sort(Comparator.comparing(x -> -x.size()));
@@ -133,6 +132,8 @@ public class Main {
             }
         }
 
+        System.out.println("Meg used=" + (Runtime.getRuntime().totalMemory() -
+                Runtime.getRuntime().freeMemory()) / (1000 * 1000) + "M");
 
         System.out.println("lines: " + cnt);
         System.out.println("chars: " + sz);
