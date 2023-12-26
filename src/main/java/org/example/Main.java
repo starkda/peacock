@@ -1,8 +1,6 @@
 package org.example;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
 
@@ -64,7 +62,6 @@ public class Main {
         long start = System.currentTimeMillis();
         int cnt = 0;
         int sz = 0;
-        int ind = 0;
         try (FileInputStream fis = new FileInputStream(filePath);
              InputStreamReader isr = new InputStreamReader(fis);
              BufferedReader br = new BufferedReader(isr)) {
@@ -73,7 +70,6 @@ public class Main {
             while ((line = br.readLine()) != null) {
                 cnt++;
                 sz += line.length();
-                ind++;
 
                 inds.add(line);
 
@@ -128,21 +124,25 @@ public class Main {
         System.out.println(ans.size());
         ans.sort(Comparator.comparing(x -> -x.size()));
         int counter = 0;
-        for (Set<Long> group : ans) {
-            System.out.println("Group " + (++counter));
-            for (Long index : group) {
-                System.out.println("\t " + inds.get(Integer.parseInt(index.toString())));
+
+        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("answer.txt")))) {
+            writer.println("Meg used=" + (Runtime.getRuntime().totalMemory() -
+                    Runtime.getRuntime().freeMemory()) / (1000 * 1000) + "M");
+            writer.println("lines: " + cnt);
+            writer.println("chars: " + sz);
+            writer.println("amount of groups: " + ans.size());
+            long end = (System.currentTimeMillis() - start);
+            writer.println("time spent: " + end);
+            for (Set<Long> group : ans) {
+                writer.println("Group " + (++counter));
+                for (Long index : group) {
+                    writer.println("\t " + inds.get(Integer.parseInt(index.toString())));
+                }
             }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        System.out.println("Meg used=" + (Runtime.getRuntime().totalMemory() -
-                Runtime.getRuntime().freeMemory()) / (1000 * 1000) + "M");
-
-        System.out.println("lines: " + cnt);
-        System.out.println("chars: " + sz);
-
-
-        long end = (System.currentTimeMillis() - start);
-        System.out.println("time spent: " + end);
     }
 }
