@@ -11,7 +11,7 @@ import static java.lang.Math.max;
 
 public class Main {
 
-    static Map<Long, String> inds = new HashMap<>(); // работаем везде с индексами строк, а не со строками для удобства
+    static List<String> inds = new ArrayList<>(); // работаем везде с индексами строк, а не со строками для удобства
 
     static Map<Entry, Integer> connects = new HashMap<>(); // Для каждого Entry храним сколько раз он встречается
     // Entry - это пара позиции и значения, она определяет коннект между строками
@@ -26,6 +26,8 @@ public class Main {
     static Set<Long> used = new HashSet<>(); // нужно чтобы понять во время дфса были ли мы в вершине или нет
 
     static List<List<Entry>> lines = new ArrayList<>(); // когда распарсим строки кладем их сюда
+
+    static List<String> placeholder = new ArrayList<>();
 
     static List<Entry> parseLine(String line) {  // получает сырую строку из input, делает проверку и возвращает в
         //удобном формате
@@ -58,10 +60,11 @@ public class Main {
 
     public static void main(String[] args) {
         String filePath = args[0];
+        inds.add("");
         long start = System.currentTimeMillis();
         int cnt = 0;
         int sz = 0;
-        long ind = 0;
+        int ind = 0;
         try (FileInputStream fis = new FileInputStream(filePath);
              InputStreamReader isr = new InputStreamReader(fis);
              BufferedReader br = new BufferedReader(isr)) {
@@ -72,7 +75,7 @@ public class Main {
                 sz += line.length();
                 ind++;
 
-                inds.put(ind, line);
+                inds.add(line);
 
                 List<Entry> curEntires = parseLine(line);
                 for (Entry cur : curEntires) {
@@ -128,7 +131,7 @@ public class Main {
         for (Set<Long> group : ans) {
             System.out.println("Group " + (++counter));
             for (Long index : group) {
-                System.out.println("\t " + inds.get(index));
+                System.out.println("\t " + inds.get(Integer.parseInt(index.toString())));
             }
         }
 
